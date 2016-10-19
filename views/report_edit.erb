@@ -1,0 +1,294 @@
+<div class="right_col" role="main">
+  <div class="title_left">
+      <h3><%=@report.report_name%></h3>
+  </div>
+
+
+  <div class="clearfix"></div>
+
+              <div class="x_panel">
+                <div class="x_title">
+                  <h2><%=@report.report_name%></h2>
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                  </ul>
+                  <div class="clearfix"></div>
+                </div>
+
+                <div class="x_content">
+                  <br />
+                  <form class="form-horizontal form-label-left" method="post">
+                    <div class="form-group">
+
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                      <div class="x_panel">
+                        <div class="x_title">
+
+                          <h2>Project progress</h2>
+                          <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+
+                    <input name="progress" class="knob" data-width="110" data-height="120" data-displayPrevious=true data-fgColor="#FFD200" data-skin="tron" data-thickness=".2" value="<%=@report.progress%>">
+
+                        </div>
+                      </div>
+                    </div>
+
+                    </div>
+                    <% if @templates.size > 0 %>
+
+                      <h4>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Modify the information that will appear in the report.
+                      </h4>
+                      <br/>
+
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Scoring Type*</label>
+                        <div class="col-md-3 col-sm-9 col-xs-12">
+                          <select class="form-control" name="report_scoring" >
+                            <%if !@report.report_scoring %>
+                            <option>Simple</option>
+                            <option>CVSS v3</option>
+                            <option>CVSS v2</option>
+                            <%else %>
+                            <option selected="selected"><%=@report.report_scoring%></option>
+                            <%end%>
+                          </select>
+
+                        </div>
+
+
+
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Report Type *</label>
+                        <div class="col-md-3 col-sm-9 col-xs-12">
+                          <select class="form-control" name="Rtype">
+
+                            <% report_types = ["External", "Internal", "Wireless", "Web App", "Internal/External"] %>
+                            <% report_types.each do |r_type| %>
+                            <% if r_type == @report.Rtype %>
+                              <option selected="selected" value="<%= r_type %>"><%=r_type%></option>
+                            <% else %>
+                              <option value="<%= r_type %>"><%=r_type%></option>
+                            <% end %>
+                            <% end %>
+
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Report Template</label>
+                        <div class="col-md-3 col-sm-9 col-xs-12">
+                          <select class="form-control" name="report_type">
+
+                                  <% @templates.each do |template| %>
+                                    <% if template.finding_template == false and template.status_template == false %>
+                                      <% if template.report_type == @report.report_type %>
+                                        <option selected="selected"><%=template.report_type%></option>
+                                      <% else %>
+                                        <option><%=template.report_type%></option>
+                                      <% end %>
+                                    <% end %>
+                                  <% end %>
+                                </select>
+                              </div>
+
+                    <% end %>
+
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">Title</label>
+                      <div class="col-md-3 col-sm-9 col-xs-12">
+                        <input required="true" type="text" class="form-control" name="report_name" value ="<%=@report.report_name%>">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">Full Company Name</label>
+                      <div class="col-md-3 col-sm-9 col-xs-12">
+                        <input required="true" type="text" class="form-control" name="full_company_name" value ="<%=@report.full_company_name%>" >
+                      </div>
+
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">Short Company Name</label>
+                      <div class="col-md-3 col-sm-9 col-xs-12">
+                        <input type="text" class="form-control" name="short_company_name" value ="<%=@report.short_company_name%>">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">Company Website</label>
+                      <div class="col-md-3 col-sm-9 col-xs-12">
+                        <input type="text" class="form-control" name="company_website" value ="<%=@report.company_website%>">
+                      </div>
+
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">Company Address</label>
+                      <div class="col-md-3 col-sm-9 col-xs-12">
+                        <input type="text" class="form-control" name="contact_address" value ="<%=@report.contact_address%>">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">Company City</label>
+                      <div class="col-md-3 col-sm-9 col-xs-12">
+                        <input type="text" class="form-control" name="contact_city" value ="<%=@report.contact_city%>">
+                      </div>
+
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">State</label>
+                      <div class="col-md-3 col-sm-9 col-xs-12">
+                        <input type="text" class="form-control" name="contact_state" value ="<%=@report.contact_state%>">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">Company Zip</label>
+                      <div class="col-md-3 col-sm-9 col-xs-12">
+                        <input type="text" class="form-control" name="contact_zip" value ="<%=@report.contact_zip%>">
+                      </div>
+
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">Contact Name</label>
+                      <div class="col-md-3 col-sm-9 col-xs-12">
+                        <input type="text" class="form-control" name="contact_name" value ="<%=@report.contact_name%>">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">Contact E-Mail</label>
+                      <div class="col-md-3 col-sm-9 col-xs-12">
+                        <input type="text" class="form-control" name="contact_email" value ="<%=@report.contact_email%>">
+                      </div>
+
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">Contact Title</label>
+                      <div class="col-md-3 col-sm-9 col-xs-12">
+                        <input type="text" class="form-control" name="contact_title" value ="<%=@report.contact_title%>">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">Contact Phone</label>
+                      <div class="col-md-3 col-sm-9 col-xs-12">
+                        <input type="text" class="form-control" name="contact_phone" value ="<%=@report.contact_phone%>">
+                      </div>
+                    </div>
+
+                    <input name="id" type="hidden" value="<%= @report.id %>"></input>
+
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                      <div class="col-md-3 col-sm-9 col-xs-12 col-md-offset-3">
+                        <button type="cancel" value="Cancel" class="btn btn-primary" href="/reports/list" formnovalidate>Cancel</button>
+                        <button type="submit" class="btn btn-success">Save</button>
+                      </div>
+                    </div>
+
+                  </form>
+                </div>
+        </div>
+
+</div>
+
+  <!-- /knob -->
+  <script src="/js/knob/jquery.knob.min.js"></script>
+
+  <!-- knob -->
+  <script>
+  $(function($) {
+
+  $(".knob").knob({
+    change: function(value) {
+      //console.log("change : " + value);
+    },
+    release: function(value) {
+      //console.log(this.$.attr('value'));
+      console.log("release : " + value);
+    },
+    cancel: function() {
+      console.log("cancel : ", this);
+    },
+    /*format : function (value) {
+     return value + '%';
+     },*/
+    draw: function() {
+
+      // "tron" case
+      if (this.$.data('skin') == 'tron') {
+
+        this.cursorExt = 0.3;
+
+        var a = this.arc(this.cv) // Arc
+          ,
+          pa // Previous arc
+          , r = 1;
+
+        this.g.lineWidth = this.lineWidth;
+
+        if (this.o.displayPrevious) {
+          pa = this.arc(this.v);
+          this.g.beginPath();
+          this.g.strokeStyle = this.pColor;
+          this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, pa.s, pa.e, pa.d);
+          this.g.stroke();
+        }
+
+        this.g.beginPath();
+        this.g.strokeStyle = r ? this.o.fgColor : this.fgColor;
+        this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, a.s, a.e, a.d);
+        this.g.stroke();
+
+        this.g.lineWidth = 2;
+        this.g.beginPath();
+        this.g.strokeStyle = this.o.fgColor;
+        this.g.arc(this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 / 3, 0, 2 * Math.PI, false);
+        this.g.stroke();
+
+        return false;
+      }
+    }
+  });
+
+  // Example of infinite knob, iPod click wheel
+  var v, up = 0,
+    down = 0,
+    i = 0,
+    $idir = $("div.idir"),
+    $ival = $("div.ival"),
+    incr = function() {
+      i++;
+      $idir.show().html("+").fadeOut();
+      $ival.html(i);
+    },
+    decr = function() {
+      i--;
+      $idir.show().html("-").fadeOut();
+      $ival.html(i);
+    };
+  $("input.infinite").knob({
+    min: 0,
+    max: 20,
+    stopper: false,
+    change: function() {
+      if (v > this.cv) {
+        if (up) {
+          decr();
+          up = 0;
+        } else {
+          up = 1;
+          down = 0;
+        }
+      } else {
+        if (v < this.cv) {
+          if (down) {
+            incr();
+            down = 0;
+          } else {
+            down = 1;
+            up = 0;
+          }
+        }
+      }
+      v = this.cv;
+    }
+  });
+  });
+  </script>
+  <!-- /knob -->

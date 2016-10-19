@@ -1,0 +1,74 @@
+<!-- page content -->
+      <div class="right_col" role="main">
+
+        <div class="">
+          <div class="page-title">
+            <div class="title_left">
+              <h3>Users</h3>
+            </div>
+
+          </div>
+          <div class="clearfix"></div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="x_panel">
+                <div class="x_title">
+
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                  </ul>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+
+                  <!-- start project list -->
+                    <%if @users%>
+                  <table class="table table-striped projects">
+
+                    <thead>
+                      <tr>
+                        <th style="width: 1%"></th>
+                        <th style="width: 40%">Username</th>
+                        <th style="width: 30%">Level/Authentication Type</th>
+                        <th style="width: 20%">Edit</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    <% @users.each do |user| %>
+                      <tr>
+                        <td></td>
+                        <td>
+                          <a><%= user.username%></a>
+                          <br />
+                          <small>Created 01.01.2015</small>
+                        </td>
+                        <td>
+                          <%= user.type %>
+                        </td>
+
+                        <td>
+                          <a href="/admin/edit_user/<%=user.id%>" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+                          <a href="/admin/delete/<%=user.id%>" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
+                        </td>
+
+                      </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                  <!-- end project list -->
+                  <%else%>
+                  <h3>No Users <%h3%>
+                  <%end%>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+      <!-- /page content -->

@@ -1,0 +1,628 @@
+<!-- page content -->
+      <div class="right_col" role="main">
+        <div class="">
+          <div class="page-title">
+            <div class="title_left">
+              <br>
+                <% if @newfinding %>
+                  <h3>Finding(s) Added! You rock.</h3>
+                <% end %>
+              <br/>
+
+              <h3>Current Findings</h3>
+            </div>
+
+            <div class="title_right">
+
+            </div>
+          </div>
+  <!-- Dashboard -->
+<% if !@master %>
+
+
+
+  <div class="clearfix"></div>
+  <div class="row">
+  <!-- pie -->
+
+                <div class="col-md-12">
+                <div class="x_panel">
+                  <div class="x_title">
+
+                    <h2>Risk distribution By Typology</h2>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+
+                    <div id="echart_donut1" style="height:350px;"></div>
+
+                  </div>
+                </div>
+              </div>
+
+
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="x_panel">
+                <div class="x_title">
+
+                  <h2>Risk distribution By Severity</h2>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                  <div id="echart_donut3" style="height:350px;"></div>
+
+                </div>
+              </div>
+            </div>
+
+
+
+                          <div class="col-md-6 col-sm-6 col-xs-12">
+                          <div class="x_panel">
+                            <div class="x_title">
+
+                              <h2>Findings By Authentication and Location</h2>
+                              <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+
+                              <div id="echart_donut2" style="height:350px;"></div>
+
+                            </div>
+                          </div>
+                        </div>
+
+
+
+</div>
+
+
+<%end%>
+<!-- Dashboard -->
+
+<% if @findings %>
+<% if @master %>
+          <div class="clearfix"></div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="x_panel">
+                <div class="x_title">
+
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                  </ul>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                  <!-- start project list -->
+                  <table class="table table-striped projects">
+                    <thead>
+                      <tr>
+
+                        <th style="width: 30%">Finding</th>
+                        <th style="width: 8%">Severity</th>
+                        <th style="width: 8%">CVSS v3 Score</th>
+                        <th style="width: 8%">CVSS v3 Severity</th>
+                        <th style="width: 8%">CVSS v2 Score</th>
+                        <th style="width: 8%">CVSS v2 Severity</th>
+                        <th style="width: 21%">Edit</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      <% @findings.each do |finding| %>
+                      <%risk_t = ["None","Low","Medium","High","Critical"]%>
+                      <%if !finding.risk_cvss_v3
+                        finding.risk_cvss_v3=0
+                        end
+                        if !finding.risk_cvss_v2
+                          finding.risk_cvss_v2=0
+                        end
+                      %>
+                       <tr>
+                        <td>
+                          <%= finding.title %>
+                        </td>
+                        <td>
+                          <%= risk_t[finding.risk] %>
+                        </td>
+
+                        <td>
+                          <%= finding.cvss_total %>
+                        </td>
+                        <td>
+                          <%= risk_t[finding.risk_cvss_v3] %>
+                        </td>
+
+                        <td>
+                          <%= finding.cvss_total2 %>
+                        </td>
+                        <td>
+                          <%= risk_t[finding.risk_cvss_v2] %>
+                        </td>
+
+                        <td>
+                          <a href="/master/findings/<%= finding.id %>/preview" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
+                          <a href="/master/findings/<%= finding.id %>/edit" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+                          <a href="/master/findings/<%= finding.id %>/delete" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
+                        </td>
+
+                      </tr>
+
+                      <% end %>
+                    </tbody>
+                  </table>
+                  <!-- end project list -->
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+<%else%>
+<!-- stat par risk
+<% @findings.each do |finding| %>
+<%vulns = Hash.new 0%>
+<% if finding.risk == 4
+  vulns["critical"] += 1
+elsif finding.risk == 3
+  vulns["severe"] += 1
+elsif finding.risk == 2
+  vulns["moderate"] += 1
+else finding.risk == 1
+  vulns["low"] += 1
+end %>
+<%end%>
+<% labels = {"label_1" => "Critical", "label_2" => "High", "label_3" => "Moderate", "label_4" => "Low", "label_5" => "Informational" }
+  p labels %>
+ -->
+  <div class="clearfix"></div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="x_panel">
+        <div class="x_title">
+
+          <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+
+          <table class="table table-striped projects">
+            <thead>
+              <tr>
+
+                <th style="width: 25%">Finding</th>
+                <th style="width: 10%">Severity</th>
+                <%if @report.report_scoring=="CVSS v3"%>
+                <th style="width: 13%">CVSS v3 Score</th>
+                <th style="width: 10%">CVSS v3 Severity</th>
+                <%elsif @report.report_scoring=="CVSS v2"%>
+                <th style="width: 13%">CVSS v2 Score</th>
+                <th style="width: 10%">CVSS v2 Severity</th>
+                <%else %>
+                <th style="width: 13%"></th>
+                <th style="width: 10%"></th>
+                <%end%>
+                <th style="width: 5%"> </th>
+                <th style="width: 25%">Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <% @findings.each do |finding| %>
+              <%risk_t = ["None","Low","Medium","High","Critical"]%>
+
+               <tr>
+
+                <td>
+                  <%= finding.title %>
+                </td>
+                <td>
+                  <%= risk_t[finding.risk] %>
+                </td>
+                <%if @report.report_scoring=="CVSS v3" %>
+                <% if finding.risk_cvss_v3 %>
+                <td>
+                  <%= finding.cvss_total %>
+                </td>
+                <td>
+                  <%= risk_t[finding.risk_cvss_v3] %>
+                </td>
+                <td>
+                  <%if finding.risk!=finding.risk_cvss_v3 %>
+                  <a href="/report/<%=@report.id%>/findings/<%=finding.id%>/edit" class="btn btn-round btn-danger btn-xs"><i class="fa fa-pencil"></i></a>
+                  <%end%>
+                </td>
+                <%else %>
+                <td></td>
+                <td></td>
+                <td></td>
+                <%end%>
+
+                <%elsif @report.report_scoring=="CVSS v2"%>
+                <% if finding.risk_cvss_v2 %>
+                <td>
+                  <%= finding.cvss_total2 %>
+                </td>
+                <td>
+                  <%= risk_t[finding.risk_cvss_v2] %>
+                </td>
+                <td>
+                  <%if finding.risk!=finding.risk_cvss_v2 %>
+                  <a href="/report/<%=@report.id%>/findings/<%=finding.id%>/edit" class="btn btn-round btn-danger btn-xs"><i class="fa fa-pencil"></i>  </a>
+                  <%end%>
+                </td>
+                <%else%>
+                <td></td>
+                <td></td>
+                <td></td>
+                <%end%>
+
+                <%else%>
+                <td></td>
+                <td></td>
+                <td></td>
+                <%end%>
+
+
+                <td>
+                  <a href="/report/<%=@report.id%>/findings/<%=finding.id%>/preview" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
+                  <a href="/report/<%=@report.id%>/findings/<%=finding.id%>/edit" class="btn btn-success btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+                  <a href="/report/<%=@report.id%>/findings/<%=finding.id%>/remove" class="btn btn-warning btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
+                  <a href="/report/<%=@report.id%>/findings/<%=finding.id%>/upload" class="btn btn-info btn-xs"><i class="fa fa-folder"></i> Upload </a>
+                </td>
+
+              </tr>
+
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+
+
+<%end%>
+<%end%>
+
+      <!-- /page content -->
+
+              <script src="/js/echart/echarts-all.js"></script>
+              <script src="/js/echart/green.js"></script>
+            <script>
+            var n=<%=@stats%>;
+            var m=["Web Application","Network Services", "Best Practice", "Compliance", "Database", "Network Internal", "Router Configuration","Social Engineering", "Physical", "Wireless", "Network Security", "System Security", "Logging and Auditing"];
+            function clean(a,b){
+
+              var i=0;
+              while(i<a.length){
+              if (a[i]==0){
+                a.splice(i,1);
+                b.splice(i,1);
+              }
+              else {i=i+1;}
+              }
+              return(a,b)
+            }
+            clean(n,m);
+
+            var myChart = echarts.init(document.getElementById('echart_donut1'), theme);
+                myChart.setOption({
+                  tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                  },
+                  calculable: true,
+                  legend: {
+                    //orient: 'vertical',
+                    //x: 'left',
+                    x: 'center',
+                    y: 'bottom',
+                    data: []
+                  },
+                  toolbox: {
+                    show: true,
+                    feature: {
+                      magicType: {
+                        show: true,
+                        type: ['pie', 'funnel'],
+                        option: {
+                          funnel: {
+                            x: '25%',
+                            width: '50%',
+                            funnelAlign: 'center',
+                            max: 1548
+                          }
+                        }
+                      },
+                      restore: {
+                        show: true
+                      },
+                      saveAsImage: {
+                        show: true
+                      }
+                    }
+                  },
+                  series: [{
+                    name: 'Access to the resource',
+                    type: 'pie',
+                    radius: ['35%', '55%'],
+                    itemStyle: {
+                      normal: {
+                        label: {
+                          show: true
+                        },
+                        labelLine: {
+                          show: true
+                        }
+                      },
+                      emphasis: {
+                        label: {
+                          show: true,
+                          position: 'center',
+                          textStyle: {
+                            fontSize: '14',
+                            fontWeight: 'normal'
+                          }
+                        }
+                      }
+                    },
+                    data: [{
+                      value: n[0],
+                      name: m[0]
+                    }, {
+                      value: n[1],
+                      name: m[1]
+                    }, {
+                      value: n[2],
+                      name: m[2]
+                    }, {
+                      value: n[3],
+                      name: m[3]
+                    }, {
+                      value: n[4],
+                      name: m[4]
+                    },{
+                      value: n[5],
+                      name: m[5]
+                    },{
+                      value: n[6],
+                      name: m[6]
+                    },{
+                      value: n[7],
+                      name: m[7]
+                    },{
+                      value: n[8],
+                      name: m[8]
+                    },{
+                      value: n[9],
+                      name: m[9]
+                    },{
+                      value: n[10],
+                      name: m[10]
+                    },{
+                      value: n[11],
+                      name: m[11]
+                    },{
+                      value: n[12],
+                      name: m[12]
+                    }]
+                  }]
+                });
+
+
+            </script>
+
+
+                  <script>
+                  var n=<%=@auth%>;
+                  var m=["Anonymos Remote","Anonymos Local","Authenticated Remote","Authenticated Local"];
+                  var m1=["Anonymos Remote","Anonymos Local","Authenticated Remote","Authenticated Local"];
+                  function clean(a,b){
+
+                    var i=0;
+                    while(i<a.length){
+                    if (a[i]==0){
+                      a.splice(i,1);
+                      b.splice(i,1);
+                    }
+                    else {i=i+1;}
+                    }
+                    return(a,b)
+                  }
+                  clean(n,m);
+
+                  var myChart = echarts.init(document.getElementById('echart_donut2'), theme);
+                      myChart.setOption({
+                        tooltip: {
+                          trigger: 'item',
+                          formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        },
+                        calculable: true,
+                        legend: {
+                          //orient: 'vertical',
+                          //x: 'left',
+                          x: 'center',
+                          y: 'bottom',
+                          data: m1
+                        },
+                        toolbox: {
+                          show: true,
+                          feature: {
+                            magicType: {
+                              show: true,
+                              type: ['pie', 'funnel'],
+                              option: {
+                                funnel: {
+                                  x: '25%',
+                                  width: '50%',
+                                  funnelAlign: 'center',
+                                  max: 1548
+                                }
+                              }
+                            },
+                            restore: {
+                              show: true
+                            },
+                            saveAsImage: {
+                              show: true
+                            }
+                          }
+                        },
+                        series: [{
+                          name: 'Access to the resource',
+                          type: 'pie',
+                          radius: ['35%', '55%'],
+                          itemStyle: {
+                            normal: {
+                              label: {
+                                show: true
+                              },
+                              labelLine: {
+                                show: true
+                              }
+                            },
+                            emphasis: {
+                              label: {
+                                show: true,
+                                position: 'center',
+                                textStyle: {
+                                  fontSize: '14',
+                                  fontWeight: 'normal'
+                                }
+                              }
+                            }
+                          },
+                          data: [{
+                            value: n[0],
+                            name: m1[0]
+                          }, {
+                            value: n[1],
+                            name: m1[1]
+                          }, {
+                            value: n[2],
+                            name: m1[2]
+                          }, {
+                            value: n[3],
+                            name: m1[3]
+                          }]
+                        }]
+                      });
+
+
+                  </script>
+
+
+                  <script>
+                  var n=<%=@stat%>;
+                  var m=['Info', 'Low', 'Medium', 'High', 'Critical'];
+
+                  function clean(a,b){
+
+                    var i=0;
+                    while(i<a.length){
+                    if (a[i]==0){
+                      a.splice(i,1);
+                      b.splice(i,1);
+                    }
+                    else {i=i+1;}
+                    }
+                    return(a,b)
+                  }
+                  clean(n,m);
+                  var myChart = echarts.init(document.getElementById('echart_donut3'), theme);
+
+                      myChart.setOption({
+                        tooltip: {
+                          trigger: 'item',
+                          formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        },
+                        calculable: true,
+                        legend: {
+                          //orient: 'vertical',
+                          //x: 'left',
+                          x: 'center',
+                          y: 'bottom',
+                          data: m
+                        },
+                        toolbox: {
+                          show: true,
+                          feature: {
+                            magicType: {
+                              show: true,
+                              type: ['pie', 'funnel'],
+                              option: {
+                                funnel: {
+                                  x: '25%',
+                                  width: '50%',
+                                  funnelAlign: 'center',
+                                  max: 1548
+                                }
+                              }
+                            },
+                            restore: {
+                              show: true
+                            },
+                            saveAsImage: {
+                              show: true
+                            }
+                          }
+                        },
+                        series: [{
+                          name: 'Pentest',
+                          type: 'pie',
+                          radius: ['35%', '55%'],
+                          itemStyle: {
+                            normal: {
+                              label: {
+                                show: true
+                              },
+                              labelLine: {
+                                show: true
+                              }
+                            },
+                            emphasis: {
+                              label: {
+                                show: true,
+                                position: 'center',
+                                textStyle: {
+                                  fontSize: '14',
+                                  fontWeight: 'normal'
+                                }
+                              }
+                            }
+                          },
+                          data: [{
+                            value: n[0],
+                            name: m[0]
+                          }, {
+                            value: n[1],
+                            name: m[1]
+                          }, {
+                            value: n[2],
+                            name: m[2]
+                          }, {
+                            value: n[3],
+                            name: m[3]
+                          }, {
+                            value: n[4],
+                            name: m[4]
+                          }]
+                        }]
+                      });
+
+
+                  </script>

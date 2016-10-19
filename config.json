@@ -1,0 +1,18 @@
+{
+    "port":"9443",
+    "ssl_certificate":"./cert.pem",
+    "ssl_key":"key.pem",
+    "ldap":"false",
+    "ldap_domain":"",
+    "ldap_dc":"",
+    "dread":false,  //DREAD risk scoring not used by default
+    "nessusmap":true, //maps nessus findings to serpico findings
+    "niktomap":true, //maps nikto findings to serpico findings
+    "acunetixmap":true, //maps acunetix findings to serpico findings
+    "burpmap":true, //maps burp findings to serpico findings
+    "finding_types": ["Web Application","Network Services", "Best Practice", "Compliance", "Database", "Network Internal", "Router Configuration","Social Engineering", "Physical", "Wireless", "Network Security", "System Security", "Logging and Auditing"],
+    "logo":"/img/logo_1.png",
+    "auto_import":true, //Experimental, will automatically create new findings on import
+    "chart":false, //Enabled or disable support
+    "cvss":true
+}

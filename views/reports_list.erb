@@ -1,0 +1,432 @@
+
+
+<!-- page content -->
+      <div class="right_col" role="main">
+
+        <div class="">
+          <div class="page-title">
+            <div class="title_left">
+              <h3>Reports</h3>
+            </div>
+<!-- Dashboard -->
+<div class="clearfix"></div>
+<div class="row">
+<!-- pie -->
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="x_panel">
+                <div class="x_title">
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                  </ul>
+                  <h2>Number of Pentest per Type</h2>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                  <div id="echart_donut" style="height:350px;"></div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="x_panel">
+                <div class="x_title">
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                  </ul>
+                  <h2>Top 5 Clients</h2>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                  <div id="echart_donut1" style="height:350px;"></div>
+
+                </div>
+              </div>
+            </div>
+
+
+
+<!-- pie -->
+
+          <div class="col-md-12">
+              <div class="x_panel">
+                <div class="x_title">
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                  </ul>
+                  <h2>Number of Penteste per month</h2>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                  <canvas id="mybarChart" style="height:350px"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+<!-- Dashboard -->
+
+          </div>
+          <div class="clearfix"></div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="x_panel">
+                <div class="x_title">
+
+                  <ul class="nav navbar-right panel_toolbox">
+
+                  </ul>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+
+                  <!-- start project list -->
+
+                  <table class="table table-striped projects">
+                    <thead>
+                      <tr>
+                        <th style="width: 1%"></th>
+                        <th style="width: 10%">Report Name</th>
+                        <th style="width: 17%">Owner</th>
+                        <th style="width: 15%">Project Progress</th>
+
+                        <th style="width: 5%">Scoring Type</th>
+                        <th style="width: 27%">Edit</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    <% @reports.each do |report| %>
+                      <tr>
+                        <td></td>
+                        <td>
+                          <a><%= report.report_name %></a>
+                          <br />
+                          <small><%= report.date %></small>
+                        </td>
+                        <td>
+                          <ul class="list-inline">
+                              <%= report.owner %>
+                          </ul>
+                        </td>
+                        <td class="project_progress">
+                          <div class="progress progress_sm">
+                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="<%=report.progress%>"></div>
+                          </div>
+                          <small><%=report.progress%>% Complete</small>
+                        </td>
+
+
+                        <td>
+                          <ul class="list-inline">
+                              <button type="button" class="btn btn-default btn-xs"><%= report.report_scoring %></button>
+                          </ul>
+                        </td>
+
+                        <td>
+
+                          <a href="/report/<%= report.id %>/generate" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
+                          <a href="/report/<%= report.id %>/edit" class="btn btn-success btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+                          <a href="/admin/add_user/<%= report.id %>" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Add Author </a>
+                          <a href="/report/<%= report.id %>/remove" class="btn btn-warning btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
+                        </td>
+
+                      </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                  <!-- end project list -->
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/moment/moment.min.js"></script>
+<script src="/js/chartjs/chart.min.js"></script>
+<script src="/js/progressbar/bootstrap-progressbar.min.js"></script>
+<script src="/js/nicescroll/jquery.nicescroll.min.js"></script>
+<script src="/js/icheck/icheck.min.js"></script>
+<script src="/js/custom.js"></script>
+<script src="/js/pace/pace.min.js"></script>
+
+
+
+<script>
+  Chart.defaults.global.legend = {
+    enabled: false
+  };
+
+
+  //barchart
+    var ctx = document.getElementById("mybarChart");
+    var m=<%=@reports_per_month%>;
+        var mybarChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+            datasets: [{
+              label: 'Pentest',
+              backgroundColor: "#FFD200",
+              data: m
+            }]
+          },
+
+          options: {
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true
+                }
+              }]
+            }
+          }
+        });
+
+  // Line chart
+  var ctx = document.getElementById("lineChart");
+  var m=<%=@reports_per_month%>;
+  var lineChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+      datasets: [{
+        label: "My First dataset",
+        backgroundColor: "rgba(255, 210, 0, 0.31)",
+        borderColor: "rgba(38, 185, 154, 0.7)",
+        pointBorderColor: "rgba(38, 185, 154, 0.7)",
+        pointBackgroundColor: "rgba(38, 185, 154, 0.7)",
+        pointHoverBackgroundColor: "#fff",
+        pointHoverBorderColor: "rgba(220,220,220,1)",
+        pointBorderWidth: 1,
+        data: m
+      }]
+    },
+  });
+
+
+  // Pie chart
+    var ctx = document.getElementById("pieChart");
+    var data = {
+      datasets: [{
+        data: [120, 50, 140, 180, 100],
+        backgroundColor: [
+          "#455C73",
+          "#9B59B6",
+          "#BDC3C7",
+          "#FFD200",
+          "#3498DB"
+        ],
+        label: 'My dataset' // for legend
+      }],
+      labels: [
+        "Dark Gray",
+        "Purple",
+        "Gray",
+        "Green",
+        "Blue"
+      ]
+    };
+
+    var pieChart = new Chart(ctx, {
+      data: data,
+      type: 'pie',
+      otpions: {
+        legend: false
+      }
+    });
+
+  </script>
+
+
+
+  <script src="/js/echart/echarts-all.js"></script>
+  <script src="/js/echart/green.js"></script>
+  
+  <script>
+  var n=<%=@reports_by_type%>;
+  var myChart = echarts.init(document.getElementById('echart_donut'), theme);
+
+      myChart.setOption({
+        tooltip: {
+          trigger: 'item',
+          formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        calculable: true,
+        legend: {
+          //orient: 'vertical',
+          //x: 'left',
+          x: 'center',
+          y: 'bottom',
+          data: ['External', 'Internal', 'Wireless', 'Web App', 'Internal/External']
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            magicType: {
+              show: true,
+              type: ['pie', 'funnel'],
+              option: {
+                funnel: {
+                  x: '25%',
+                  width: '50%',
+                  funnelAlign: 'center',
+                  max: 1548
+                }
+              }
+            },
+            restore: {
+              show: true
+            },
+            saveAsImage: {
+              show: true
+            }
+          }
+        },
+        series: [{
+          name: 'Pentest',
+          type: 'pie',
+          radius: ['35%', '55%'],
+          itemStyle: {
+            normal: {
+              label: {
+                show: true
+              },
+              labelLine: {
+                show: true
+              }
+            },
+            emphasis: {
+              label: {
+                show: true,
+                position: 'center',
+                textStyle: {
+                  fontSize: '14',
+                  fontWeight: 'normal'
+                }
+              }
+            }
+          },
+          data: [{
+            value: n[0],
+            name: 'External'
+          }, {
+            value: n[1],
+            name: 'Internal'
+          }, {
+            value: n[2],
+            name: 'Wireless'
+          }, {
+            value: n[3],
+            name: 'Web App'
+          }, {
+            value: n[4],
+            name: 'Internal/External'
+          }]
+        }]
+      });
+
+
+  </script>
+
+
+
+  <script>
+  var n=<%=@keys%>;
+  var n1=<%=@values%>;
+  var myChart = echarts.init(document.getElementById('echart_donut1'), theme);
+      myChart.setOption({
+        tooltip: {
+          trigger: 'item',
+          formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        calculable: true,
+        legend: {
+          //orient: 'vertical',
+          //x: 'left',
+          x: 'center',
+          y: 'bottom',
+          data: n
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            magicType: {
+              show: true,
+              type: ['pie', 'funnel'],
+              option: {
+                funnel: {
+                  x: '25%',
+                  width: '50%',
+                  funnelAlign: 'center',
+                  max: 1548
+                }
+              }
+            },
+            restore: {
+              show: true
+            },
+            saveAsImage: {
+              show: true
+            }
+          }
+        },
+        series: [{
+          name: 'Access to the resource',
+          type: 'pie',
+          radius: ['35%', '55%'],
+          itemStyle: {
+            normal: {
+              label: {
+                show: true
+              },
+              labelLine: {
+                show: true
+              }
+            },
+            emphasis: {
+              label: {
+                show: true,
+                position: 'center',
+                textStyle: {
+                  fontSize: '14',
+                  fontWeight: 'normal'
+                }
+              }
+            }
+          },
+          data: [{
+            value: n1[0],
+            name: n[0]
+          }, {
+            value: n1[1],
+            name: n[1]
+          }, {
+            value: n1[2],
+            name: n[2]
+          }, {
+            value: n1[3],
+            name: n[3]
+          }, {
+            value: n1[4],
+            name: n[4]
+          }]
+        }]
+      });
+
+
+  </script>
+      <!-- /page content -->

@@ -1,0 +1,110 @@
+<!-- page content -->
+      <div class="right_col" role="main">
+        <div class="">
+          <div class="page-title">
+            <div class="title_left">
+              <br>
+                <% if @findings %>
+                <% if @autoadd %>
+                  <h3>Auto Add Findings</h3>
+                  <h4>The following findings were automatically selected to be added to your report.</h4>
+                <% else%>
+                <h3>Templated Findings</h3>
+                <h4>Add findings from the template database to your report.</h4>
+                <%end%>
+              <br/>
+
+              <h3>Current Findings</h3>
+            </div>
+
+
+          </div>
+
+          <form action="/report/<%= @report.id %>/findings_add" method="post">
+            <table class="table table-striped projects">
+              <thead>
+                <tr>
+                  <th style="width: 1%"></th>
+                  <th style="width: 40%">Findings</th>
+                  <th style="width: 15%">Severity</th>
+                  <th style="width: 15%">CVSS</th>
+                  <th style="width: 15%">Edit</th>
+                </tr>
+              </thead>
+              <tbody>
+
+                <% @findings.each do |finding| %>
+
+                 <tr>
+                  <td>
+
+                  </td>
+                  <td>
+                    <div class="checkbox">
+                    <% if @autoadd %>
+                      <% if @autoadd_findings.include?(finding.id.to_s) and not @dup_findings.include?(finding.id) %>
+                      <input name="finding[]" type="checkbox" value="<%= finding.id %>" class="flat"></input>
+                      <% else %>
+                      <input name="finding[]" type="checkbox" value="<%= finding.id %>" class="flat"></input>
+                      <% end %>
+                    <% else %>
+                    <input name="finding[]" type="checkbox" value="<%= finding.id %>" class="flat"></input>
+                    <% end %>
+                    <%= finding.title %>
+                    <% if @dup_findings %>
+                      <%if @dup_findings.include?(finding.id)%>
+                        <label class="label-warning"> Duplicate </label>
+                    <% end %>
+                    <% end %>
+
+                    <%if @autoadd_hosts%>
+                    <% @autoadd_hosts.keys.each do |x|%>
+                    <% if finding.id == x.to_i %>
+                      <% @autoadd_hosts[x].each do |ip|%>
+                      <label><%ip%></label>
+                      <% iplist = @autoadd_hosts[x].join(",") %>
+                      <input name="finding<%= finding.id.to_s %>" type="hidden" value="<%= iplist %>"></input>
+                      <% end %>
+                    <%end%>
+
+                    <%end%>
+                    <%end%>
+                  </div>
+                  </td>
+                  <td>
+                    <%risk_t = ["None","Low","Moderate","High","Critical"]%>
+                    <%= risk_t[finding.risk] %>
+                  </td>
+                  <td>
+                    <%= finding.cvss_total %>
+                  </td>
+
+                  <td>
+                    <% if @master %>
+                    <a href="/master/findings/<%= finding.id %>/preview" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
+                    <a href="/master/findings/<%= finding.id %>/edit" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+                    <%else%>
+                    <a href="/master/findings/<%= finding.id %>/preview" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
+                    <%end%>
+                  </td>
+                </tr>
+
+                <% end %>
+              </tbody>
+            </table>
+       <div class="form-group">
+          <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+            <button type="submit"  class="btn btn-success" value="Add">Add
+              <a href="/report/<%=@report.id%>/findings">
+                <button type="button" class="btn btn-primary" value="Cancel">Cancel</button>
+              </a>
+            </button>
+          </div>
+        </div>
+          </form>
+<%end%>
+
+
+      </div>
+    </div>
+      <!-- /page content -->

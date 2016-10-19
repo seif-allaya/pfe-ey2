@@ -1,0 +1,566 @@
+<div class="right_col" role="main">
+    <div class="title_left">
+        <h3>New Finding</h3>
+    </div>
+
+<div class="x_panel">
+  <div class="x_title">
+      <h2>General Information</h2>
+      <div class="clearfix"></div>
+  </div>
+
+<div class="x_content">
+
+
+
+  <form class="form-horizontal form-label-left"  method="post" enctype ='application/x-www-form-urlencoded'>
+    <div class="form-group">
+      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title">Title</label>
+      <div class="col-md-9 col-sm-9 col-xs-12">
+        <input name="title" type="text" class="form-control" required="true"></input>
+      </div>
+    </div>
+    <% if !@master %>
+      <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="assessment_type">Assessment Type</label>
+        <div class="col-md-9 col-sm-9 col-xs-12">
+          <select class="form-control"name="assessment_type" class="form-control">
+            <% options.assessment_types.each do |type| %>
+              <option><%=type%></option>
+            <% end %>
+          </select>
+        </div>
+      </div>
+    <% end %>
+    <div class="form-group">
+      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="type">Finding Type</label>
+      <div class="col-md-9 col-sm-9 col-xs-12">
+        <select class="form-control"name="type" class="form-control">
+          <% options.finding_types.each do |type| %>
+            <option><%=type%></option>
+          <% end %>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="effort">Remediation Effort</label>
+      <div class="col-md-9 col-sm-9 col-xs-12">
+        <select class="form-control"name="effort">
+          <option>QUICK</option>
+          <option>PLANNED</option>
+          <option>INVOLVED</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="risk">Vulnerability Risk Level</label>
+      <div class="col-md-9 col-sm-9 col-xs-12">
+        <select class="form-control"name="risk">
+          <option value="0">
+            <%= "None" %>
+          </option>
+          <option value="1">
+            <%= "Low" %>
+          </option>
+          <option value="2">
+            <%= "Medium" %>
+          </option>
+          <option value="3">
+            <%= "High" %>
+          </option>
+          <option value="4">
+            <%= "Critical" %>
+          </option>
+        </select>
+      </div>
+    </div>
+
+  <div class="form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="poc">Proof of Concept</label>
+    <div class="col-md-9 col-sm-9 col-xs-12">
+      <textarea class="form-control" id="poc" name="poc" rows="10"></textarea>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="presentation_points">Brief Description</label>
+    <div class="col-md-9 col-sm-9 col-xs-12">
+      <textarea class="form-control" id="poc" name="presentation_points" rows="10"></textarea>
+    </div>
+  </div>
+  <% if !@master %>
+    <div class="form-group">
+      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="affected_hosts">Affected Hosts</label>
+      <div class="col-md-9 col-sm-9 col-xs-12">
+        <textarea class="form-control" id="affected_hosts" name="affected_hosts" rows="10"></textarea>
+      </div>
+    </div>
+  <% end %>
+  <div class="form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="remediation">Remediation</label>
+    <div class="col-md-9 col-sm-9 col-xs-12">
+      <textarea class="form-control" name="remediation" rows="10"></textarea>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="references">References (One Per Line)</label>
+    <div class="col-md-9 col-sm-9 col-xs-12">
+      <textarea class="form-control" name="references" rows="5"></textarea>
+    </div>
+  </div>
+  <% if !@master %>
+    <div class="form-group">
+      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="notes">Notes</label>
+      <div class="col-md-9 col-sm-9 col-xs-12">
+        <textarea class="form-control" id="notes" name="notes" rows="10"></textarea>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @master
+    @cvss3=true
+    @cvss2=true
+
+  elsif @report.report_scoring=="CVSS v3"
+    @cvss3=true
+  elsif @report.report_scoring=="CVSS v2"
+    @cvss2=true
+  end
+     %>
+
+<% if @cvss %>
+    <%if @cvss3%>
+        <div class="x_title">
+          <h2>Score CVSS v3 </h2>
+          <div class="clearfix"></div>
+        </div>
+
+        <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" >Base Score </label>
+        </div>
+      <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="av">Attack Vector : AV </label>
+        <div class="col-md-9 col-sm-9 col-xs-12">
+          <select class="form-control"name="av" class="form-control">
+            <option>Local</option>
+            <option>Adjacent Network</option>
+            <option>Network</option>
+            <option>Physical</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ac">Access Complexity : AC </label>
+        <div class="col-md-9 col-sm-9 col-xs-12">
+          <select class="form-control"name="ac" class="form-control">
+            <option>High</option>
+            <option>Low</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ui">User Interaction : UI </label>
+        <div class="col-md-9 col-sm-9 col-xs-12">
+          <select class="form-control"name="ui" class="form-control">
+            <option>Required</option>
+            <option>None</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pr">Privileges Required : PR</label>
+        <div class="col-md-9 col-sm-9 col-xs-12">
+          <select class="form-control"name="pr" class="form-control">
+            <option>Low</option>
+            <option>High</option>
+            <option>None</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" class="form-control">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="s">Scope : S </label>
+        <div class="col-md-9 col-sm-9 col-xs-12">
+          <select class="form-control"name="s" class="form-control">
+            <option>Unchanged</option>
+            <option>Changed</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="c">Confidentiality Impact : C </label>
+        <div class="col-md-9 col-sm-9 col-xs-12">
+          <select class="form-control"name="c" class="form-control">
+            <option>None</option>
+            <option>Low</option>
+            <option>High</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="i">Integrity Impact : I </label>
+        <div class="col-md-9 col-sm-9 col-xs-12">
+          <select class="form-control"name="i" class="form-control">
+            <option>None</option>
+            <option>Low</option>
+            <option>High</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="a">Availability Impact : A </label>
+        <div class="col-md-9 col-sm-9 col-xs-12">
+          <select class="form-control"name="a">
+            <option>None</option>
+            <option>Low</option>
+            <option>High</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+      <label class="control-label col-md-3 col-sm-3 col-xs-12">Temporal Score </label>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="e">Exploitability : E</label>
+        <div class="col-md-9 col-sm-9 col-xs-12">
+          <select class="form-control"name="e">
+            <option>Not Defined</option>
+            <option>Unproven Exploit Exists</option>
+            <option>Proof-of-Concept Code</option>
+            <option>Functional Exploit Exists</option>
+            <option>High</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="rl">Remediation Level : RL </label>
+        <div class="col-md-9 col-sm-9 col-xs-12">
+          <select class="form-control"name="rl">
+            <option>Not Defined</option>
+            <option>Official Fix</option>
+            <option>Temporary Fix</option>
+            <option>Workaround</option>
+            <option>Unavailable</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="rc">Report Confidence : RC </label>
+        <div class="col-md-9 col-sm-9 col-xs-12">
+          <select class="form-control"name="rc">
+            <option>Not Defined</option>
+            <option>Unknown</option>
+            <option>Reasonable</option>
+            <option>Confirmed</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+      <label class="control-label col-md-3 col-sm-3 col-xs-12">Enviromental Score </label>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="mav">Modified Atack Vector : MAV </label>
+        <div class="col-md-9 col-sm-9 col-xs-12">
+          <select class="form-control"name="mav">
+            <option>Not Defined</option>
+            <option>Local</option>
+            <option>Adjacent Network</option>
+            <option>Network</option>
+            <option>Physical</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="mac">Modified Access Complexity : MAC </label>
+        <div class="col-md-9 col-sm-9 col-xs-12">
+          <select class="form-control"name="mac">
+            <option>Not Defined</option>
+            <option>High</option>
+            <option>Low</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="mui">Modified User Interaction : MUI </label>
+        <div class="col-md-9 col-sm-9 col-xs-12">
+          <select class="form-control"name="mui">
+            <option>Not Defined</option>
+            <option>Required</option>
+            <option>None</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="mpr">Modified Privileges Required : MPR </label>
+        <div class="col-md-9 col-sm-9 col-xs-12">
+          <select class="form-control"name="mpr">
+            <option>Not Defined</option>
+            <option>Low</option>
+            <option>High</option>
+            <option>None</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ms">Modified Scope : MS </label>
+        <div class="col-md-9 col-sm-9 col-xs-12">
+          <select class="form-control"name="ms">
+            <option>Not Defined</option>
+            <option>Unchanged</option>
+            <option>Changed</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="mc">Modified Confidentiality Impact : MC </label>
+        <div class="col-md-9 col-sm-9 col-xs-12">
+          <select class="form-control"name="mc">
+            <option>Not Defined</option>
+            <option>None</option>
+            <option>Low</option>
+            <option>High</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="mi">Modified Integrity Impact : MI </label>
+        <div class="col-md-9 col-sm-9 col-xs-12">
+          <select class="form-control"name="mi">
+            <option>Not Defined</option>
+            <option>None</option>
+            <option>Low</option>
+            <option>High</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ma">Modified Availability Impact : MA </label>
+        <div class="col-md-9 col-sm-9 col-xs-12">
+          <select class="form-control"name="ma">
+            <option>Not Defined</option>
+            <option>None</option>
+            <option>Low</option>
+            <option>High</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="cr">Confidentiality Requirement : CR </label>
+        <div class="col-md-9 col-sm-9 col-xs-12">
+          <select class="form-control"name="cr">
+            <option>Not Defined</option>
+            <option>Low</option>
+            <option>Medium</option>
+            <option>High</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ir">Integrity Requirement : IR </label>
+        <div class="col-md-9 col-sm-9 col-xs-12">
+          <select class="form-control"name="ir">
+            <option>Not Defined</option>
+            <option>Low</option>
+            <option>Medium</option>
+            <option>High</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ar">Availability Requirement : AR </label>
+        <div class="col-md-9 col-sm-9 col-xs-12">
+          <select class="form-control"name="ar">
+            <option>Not Defined</option>
+            <option>Low</option>
+            <option>Medium</option>
+            <option>High</option>
+          </select>
+        </div>
+      </div>
+<%end%>
+
+<%if @cvss2%>
+
+<div class="x_title">
+  <h2>Score CVSS v2</h2>
+  <div class="clearfix"></div>
+</div>
+<div class="form-group">
+<label class="control-label col-md-3 col-sm-3 col-xs-12" >Base Score </label>
+</div>
+<div class="form-group">
+<label class="control-label col-md-3 col-sm-3 col-xs-12" for="av2">Access Vector : AV </label>
+<div class="col-md-9 col-sm-9 col-xs-12">
+  <select class="form-control"name="av2" class="form-control">
+    <option>Local</option>
+    <option>Adjacent Network</option>
+    <option>Network</option>
+  </select>
+</div>
+</div>
+<div class="form-group">
+  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ac2">Access Complexity : AC </label>
+<div class="col-md-9 col-sm-9 col-xs-12">
+  <select class="form-control"name="ac2" class="form-control">
+    <option>High</option>
+    <option>Medium</option>
+    <option>Low</option>
+  </select>
+</div>
+</div>
+
+<div class="form-group">
+<label class="control-label col-md-3 col-sm-3 col-xs-12" for="au2">Authentication : AU </label>
+<div class="col-md-9 col-sm-9 col-xs-12">
+  <select class="form-control"name="au2" class="form-control">
+    <option>Multiple</option>
+    <option>Single</option>
+    <option>None</option>
+  </select>
+</div>
+</div>
+
+<div class="form-group">
+<label class="control-label col-md-3 col-sm-3 col-xs-12" for="c2">Confidentiality Impact : C </label>
+<div class="col-md-9 col-sm-9 col-xs-12">
+  <select class="form-control"name="c2" class="form-control">
+    <option>None</option>
+    <option>Partial</option>
+    <option>Complete</option>
+  </select>
+</div>
+</div>
+<div class="form-group">
+<label class="control-label col-md-3 col-sm-3 col-xs-12" for="i2">Integrity Impact : I </label>
+<div class="col-md-9 col-sm-9 col-xs-12">
+  <select class="form-control"name="i2" class="form-control">
+    <option>None</option>
+    <option>Partial</option>
+    <option>Complete</option>
+  </select>
+</div>
+</div>
+<div class="form-group">
+<label class="control-label col-md-3 col-sm-3 col-xs-12" for="a2">Availability Impact : A </label>
+<div class="col-md-9 col-sm-9 col-xs-12">
+  <select class="form-control"name="a2">
+    <option>None</option>
+    <option>Partial</option>
+    <option>Complete</option>
+  </select>
+</div>
+</div>
+
+<div class="form-group">
+<label class="control-label col-md-3 col-sm-3 col-xs-12">Temporal Score </label>
+</div>
+
+<div class="form-group">
+<label class="control-label col-md-3 col-sm-3 col-xs-12" for="e2">Exploitability : E </label>
+<div class="col-md-9 col-sm-9 col-xs-12">
+  <select class="form-control"name="e2">
+    <option>Not Defined</option>
+    <option>Unproven Exploit Exists</option>
+    <option>Proof-of-Concept Code</option>
+    <option>Functional Exploit Exists</option>
+    <option>High</option>
+  </select>
+</div>
+</div>
+<div class="form-group">
+<label class="control-label col-md-3 col-sm-3 col-xs-12" for="rl2">Remediation Level : RL </label>
+<div class="col-md-9 col-sm-9 col-xs-12">
+  <select class="form-control"name="rl2">
+    <option>Not Defined</option>
+    <option>Official Fix</option>
+    <option>Temporary Fix</option>
+    <option>Workaround</option>
+    <option>Unavailable</option>
+  </select>
+</div>
+</div>
+<div class="form-group">
+<label class="control-label col-md-3 col-sm-3 col-xs-12" for="rc2">Report Confidence : RC </label>
+<div class="col-md-9 col-sm-9 col-xs-12">
+  <select class="form-control"name="rc2">
+    <option>Not Defined</option>
+    <option>Unconfirmed</option>
+    <option>Uncorroborated</option>
+    <option>Confirmed</option>
+  </select>
+</div>
+</div>
+<div class="form-group">
+<label class="control-label col-md-3 col-sm-3 col-xs-12">Enviromental Score </label>
+</div>
+<div class="form-group">
+<label class="control-label col-md-3 col-sm-3 col-xs-12" for="cdp">Collateral Damage Potential (CDP) </label>
+<div class="col-md-9 col-sm-9 col-xs-12">
+  <select class="form-control"name="cdp">
+    <option>Not Defined</option>
+    <option>None</option>
+    <option>Low</option>
+    <option>Low-Medium</option>
+    <option>Medium-High</option>
+    <option>High</option>
+  </select>
+</div>
+</div>
+
+<div class="form-group">
+<label class="control-label col-md-3 col-sm-3 col-xs-12" for="td">Target Distribution : TD </label>
+<div class="col-md-9 col-sm-9 col-xs-12">
+  <select class="form-control"name="td">
+    <option>Not Defined</option>
+    <option>None</option>
+    <option>Low</option>
+    <option>Medium</option>
+    <option>High</option>
+  </select>
+</div>
+</div>
+
+<div class="form-group">
+<label class="control-label col-md-3 col-sm-3 col-xs-12" for="cr2">Confidentiality Requirement : CR </label>
+<div class="col-md-9 col-sm-9 col-xs-12">
+  <select class="form-control"name="cr2">
+    <option>Not Defined</option>
+    <option>Low</option>
+    <option>Medium</option>
+    <option>High</option>
+  </select>
+</div>
+</div>
+<div class="form-group">
+<label class="control-label col-md-3 col-sm-3 col-xs-12" for="ir2">Integrity Requirement : IR </label>
+<div class="col-md-9 col-sm-9 col-xs-12">
+  <select class="form-control"name="ir2">
+    <option>Not Defined</option>
+    <option>Low</option>
+    <option>Medium</option>
+    <option>High</option>
+  </select>
+</div>
+</div>
+<div class="form-group">
+<label class="control-label col-md-3 col-sm-3 col-xs-12" for="ar2">Availability Requirement : AR </label>
+<div class="col-md-9 col-sm-9 col-xs-12">
+  <select class="form-control"name="ar2">
+    <option>Not Defined</option>
+    <option>Low</option>
+    <option>Medium</option>
+    <option>High</option>
+  </select>
+</div>
+</div>
+<%end%>
+
+<%end%>
+    <input type="submit" value="Save" class="btn btn-primary"></input>
+    <button value="Cancel" formnovalidate class="btn btn-success">Cancel</button>
+  </form>
+</div>
+</div>
+</div>

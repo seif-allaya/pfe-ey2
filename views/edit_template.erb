@@ -1,0 +1,65 @@
+<div class="right_col" role="main">
+    <div class="title_left">
+        <h3>Edit Report Template</h3>
+    </div>
+
+    <div class="x_panel">
+      <div class="x_title">
+          <h2>Template Information</h2>
+          <div class="clearfix"></div>
+      </div>
+
+    <div class="x_content">
+  <form action="/admin/templates/edit" enctype="multipart/form-data" method="post" class="form-horizontal form-label-left input_mask">
+
+    <div class="form-group">
+      <label class="control-label col-md-3 col-sm-3 col-xs-12">Report type</label>
+      <div class="col-md-9 col-sm-9 col-xs-12">
+        <input required="true" type="text" class="form-control" name="report_type" required="<%= true %>" type="text" value="<%= @template.report_type %>">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label col-md-3 col-sm-3 col-xs-12">File Description</label value="<%= @template.description %>">
+      <div class="col-md-9 col-sm-9 col-xs-12">
+        <input type="text" class="form-control" name="description" type="text">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label col-md-3 col-sm-3 col-xs-12">Finding Template</label>
+      <div class="col-md-9 col-sm-9 col-xs-12">
+        <input class="flat" name="finding_template" type="checkbox">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label col-md-3 col-sm-3 col-xs-12">Status Template</label>
+      <div class="col-md-9 col-sm-9 col-xs-12">
+        <input  class="flat" name="status_template" type="checkbox">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label col-md-3 col-sm-3 col-xs-12">DOCX</label>
+      <div class="col-md-9 col-sm-9 col-xs-12">
+        <input name="file" type="file" required="true">
+      </div>
+    </div>
+
+    <div class="ln_solid"></div>
+    <div class="form-group">
+      <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+
+        <input name="id" type="hidden" value="<%= @template.id %>"></input>
+        <input type="submit" value="Modify" class="btn btn-success"></input>
+        <button value="Cancel" class="btn btn-primary" formnovalidate>Cancel</button>
+
+      </div>
+    </div>
+  </form>
+</div>
+
+</div>
+</div>
+</div>

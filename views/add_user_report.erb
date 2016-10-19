@@ -1,0 +1,79 @@
+<div class="right_col" role="main">
+    <div class="title_left">
+        <h3>Editing <%@report.report_name%> Report</h3>
+    </div>
+
+    <div class="x_panel">
+      <div class="x_title">
+          <h2>Report Information</h2>
+          <div class="clearfix"></div>
+      </div>
+
+    <div class="x_content">
+
+
+<form action="/admin/add_user/<%= @report.id %>" method="post" class="form-inline" enctype="multipart/form-data">
+  <table class="table table-striped projects">
+    <thead>
+      <tr>
+    <th style="width: 40%">Report Owner</th>
+  </tr>
+    </thead>
+    <tbody>
+      <td>
+        <%=@report.owner%>
+      </td>
+    </tbody>
+  </table>
+
+<%if @report.authors%>
+
+  <table class="table table-striped projects">
+
+    <thead>
+      <tr>
+        <th style="width: 40%">Current Authors</th>
+        <th style="width: 20%">Remove</th>
+
+      </tr>
+    </thead>
+    <tbody>
+        <% @report.authors.each do |user|%>
+      <tr>
+        <td>
+          <%=user%>
+        </td>
+        <td>
+          <a href="/admin/del_user_report/<%=@report.id%>/<%=user%>" class="btn btn-danger btn-xs">
+            <i class="fa fa-trash-o"></i> Delete </a>
+        </td>
+      </tr>
+      <%end%>
+    </tbody>
+
+</table>
+<%end%>
+<div class="form-group">
+<label class="control-label col-md-3 col-sm-3 col-xs-12" for="add_collaborator">
+  Add Collaborator
+  <select class="form-control" name="author">
+    <% @users.each do |user| %>
+      <option><%=user.username%></option>
+    <% end %>
+  </select>
+</label>
+</div>
+
+<div class="ln_solid"></div>
+<div class="form-group">
+  <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+
+    <button type="submit" class="btn btn-success">Save</button>
+  </div>
+</div>
+</form>
+
+
+      </div>
+      </div>
+      </div>

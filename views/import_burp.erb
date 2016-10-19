@@ -1,0 +1,34 @@
+<div class="right_col" role="main">
+    <div class="title_left">
+        <h3>Auto Add Findings from Burp scanner report (XML only)</h3>
+    </div>
+
+    <div class="x_panel">
+      <div class="x_title">
+
+          <div class="clearfix"></div>
+      </div>
+
+    <div class="x_content">
+<% if not @burpmap %>
+Burp Auto Mapping not enabled. Contact your administrator to enable.
+<% else %>
+  <form enctype="multipart/form-data" method="post" class="form-horizontal form-label-left input_mask" action="/report/<%=@report.id%>/import_autoadd">
+
+
+          <div class="form-group">
+              <h2>Upload burp scanner report file (XML only)</h2>
+              <input name="file" type="file">
+
+          </div>
+
+
+<input name="type" type="hidden" value="burp"></input>
+    <input type="submit" value="Upload" class="btn btn-success"></input>
+    <button value="Cancel" class="btn btn-primary" href ="/report/<%@report.id%>/additional_features">Cancel</button>
+  </form>
+</div>
+<%end%>
+</div>
+</div>
+</div>

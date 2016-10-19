@@ -1,0 +1,62 @@
+<div class="right_col" role="main">
+    <div class="title_left">
+        <h3>Add Report Template</h3>
+    </div>
+
+    <div class="x_panel">
+      <div class="x_title">
+          <h2>Template Information</h2>
+          <div class="clearfix"></div>
+      </div>
+
+    <div class="x_content">
+  <form action="/admin/templates/add" class="form-horizontal form-label-left input_mask" method="post" enctype="multipart/form-data">
+
+    <div class="form-group">
+      <label class="control-label col-md-3 col-sm-3 col-xs-12">Report type</label>
+      <div class="col-md-9 col-sm-9 col-xs-12">
+        <input type="text" class="form-control" name="report_type" required="<%= true %>" type="text">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label col-md-3 col-sm-3 col-xs-12">File Description</label>
+      <div class="col-md-9 col-sm-9 col-xs-12">
+        <input type="text" class="form-control" name="description" type="text">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label col-md-3 col-sm-3 col-xs-12">Finding Template</label>
+      <div class="col-md-9 col-sm-9 col-xs-12">
+        <input class="flat" name="finding_template" type="checkbox">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label col-md-3 col-sm-3 col-xs-12">Status Template</label>
+      <div class="col-md-9 col-sm-9 col-xs-12">
+        <input  class="flat" name="status_template" type="checkbox">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label col-md-3 col-sm-3 col-xs-12">DOCX</label>
+      <div class="col-md-9 col-sm-9 col-xs-12">
+        <input name="file" type="file">
+      </div>
+    </div>
+
+    <div class="ln_solid"></div>
+    <div class="form-group">
+      <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+        <button value="Save" class="btn btn-success">Save</button>
+        <button value="Cancel" class="btn btn-primary" formnovalidate >Cancel</button>
+      </div>
+    </div>
+  </form>
+
+</div>
+</div>
+</div>
+</div>

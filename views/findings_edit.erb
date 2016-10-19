@@ -1,0 +1,933 @@
+<div class="right_col" role="main">
+  <div class="title_left">
+              <h3><%= @finding.title %></h3>
+  </div>
+ <div class="x_panel">
+                <div class="x_title">
+                  <h2>General Information</h2>
+
+                  <div class="clearfix"></div>
+                </div>
+
+                <div class="x_content">
+                  <br />
+                  <form class="form-horizontal form-label-left" method="post">
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">Title</label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <input required="true" name="title" type="text" class="form-control" value="<%= @finding.title %>" ></input>
+                      </div>
+                    </div>
+
+                    <% if !@master %>
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="assessment_type">Assessment Type</label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="assessment_type">
+                          <% options.assessment_types.each do |type| %>
+                            <% if @finding %>
+                              <% if type == @finding.type %>
+                                <option selected="selected"><%=type%></option>
+                              <% else %>
+                              <option><%=type%></option>
+                              <% end %>
+                            <% end %>
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+                    <% end %>
+
+                    <% if @master %>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="approved">Approved</label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <% if @finding.approved %>
+                            <input checked="checked" name="approved" type="checkbox"></input>
+                          <% else %>
+                            <input name="approved" type="checkbox"></input>
+                          <% end %>
+                        </div>
+                      </div>
+                    <% end %>
+
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="risk">Vulnerability Risk Level </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="risk">
+                          <% risk_types = ["None", "Low", "Medium", "High", "Critical"] %>
+                          <% [0,1,2,3,4].each do |r_type| %>
+                          <% if r_type == @finding.risk %>
+                            <option selected="selected" value="<%= r_type %>"><%=risk_types[r_type]%></option>
+                          <% else %>
+                            <option value="<%= r_type %>"><%=risk_types[r_type]%></option>
+                          <% end %>
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="overview" > Overview
+                      </label>
+
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <textarea class="form-control" placeholder='rows="9"' >
+                          <% if @finding %>
+                            <% if @finding.overview %>
+                            <%=meta_markup(@finding.overview)%>
+                          <% end %>
+                          <% end %>
+                        </textarea>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="poc" > Proof of Concept
+                      </label>
+
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <textarea class="form-control"  placeholder='rows="6"' >
+                          <% if @finding %>
+                            <% if @finding.poc %>
+                            <%=meta_markup(@finding.poc)%>
+                          <% end %>
+                          <% end %>
+                        </textarea>
+                      </div>
+                    </div>
+
+                    <%if !@master%>
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="presentation_points">Brief Description</label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <textarea class="form-control" name="presentation_points" >
+                          <% if @finding %>
+                            <% if @finding.presentation_points %>
+                            <%=meta_markup(@finding.presentation_points)%>
+                          <% end %>
+                          <% end %>
+                        </textarea>
+                      </div>
+                    </div>
+                    <%end%>
+
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="affected_hosts" > Affected Hosts/URLs
+                      </label>
+
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <textarea class="form-control"  placeholder='rows="3"' >
+                          <% if @finding %>
+                            <% if @finding.affected_hosts %>
+                            <%=meta_markup(@finding.affected_hosts)%>
+                          <% end %>
+                          <% end %>
+                        </textarea>
+                      </div>
+                    </div>
+
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="remediation" > Remediation
+                      </label>
+
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <textarea class="form-control"  placeholder='rows="3"' >
+                          <% if @finding %>
+                            <% if @finding.remediation %>
+                            <%=meta_markup(@finding.remediation)%>
+                          <% end %>
+                          <% end %>
+                        </textarea>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="references" > References (One Per Line)
+                      </label>
+
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <textarea class="form-control"  placeholder='rows="3"' >
+                          <% if @finding %>
+                            <% if @finding.references %>
+                            <%=meta_markup(@finding.references)%>
+                          <% end %>
+                          <% end %>
+                        </textarea>
+                      </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="effort">Remediation Effort </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="effort">
+                          <% options.effort.each do |effort| %>
+
+                              <% if effort == @finding.effort %>
+                                <option selected="selected"><%=effort%></option>
+                              <% else %>
+                              <option><%=effort%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="type">Finding Type</label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="type">
+                          <% options.finding_types.each do |type| %>
+
+                              <% if type == @finding.type %>
+                                <option selected="selected"><%=type%></option>
+                              <% else %>
+                              <option><%=type%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+                    <% if @master
+                      @cvss3=true
+                      @cvss2=true
+
+                    elsif @report.report_scoring=="CVSS v3"
+                      @cvss3=true
+                    elsif @report.report_scoring=="CVSS v2"
+                      @cvss2=true
+                    end
+                       %>
+
+                    <%if @cvss3%>
+                    <div class="x_title">
+                      <h2>Score CVSS v3 &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp</h2>
+                      <h2>Score = <%=@finding.cvss_total%> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </h2>
+
+                        <% risk_types = ["None", "Low", "Medium", "High", "Critical"] %>
+                        <% if @finding.risk_cvss_v3 %>
+
+                        <h2>Severity = <%=risk_types[@finding.risk_cvss_v3]%> </h2>
+
+                        <% end %>
+
+
+
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" >Base Score </label>
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="av">Attack Vector : AV </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="av">
+                          <% options.av.each do |av| %>
+
+                              <% if av == @finding.av %>
+                                <option selected="selected"><%=av%></option>
+                              <% else %>
+                              <option><%=av%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ac">Access Complexity : AC </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="ac">
+                          <% options.ac.each do |ac| %>
+
+                              <% if ac == @finding.ac %>
+                                <option selected="selected"><%=ac%></option>
+                              <% else %>
+                              <option><%=ac%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pr">Privileges Required : PR</label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="pr">
+                          <% options.pr.each do |pr| %>
+
+                              <% if pr == @finding.pr %>
+                                <option selected="selected"><%=pr%></option>
+                              <% else %>
+                              <option><%=pr%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ui">User Interaction : UI </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="ui">
+                          <% options.ui.each do |ui| %>
+
+                              <% if ui == @finding.ui %>
+                                <option selected="selected"><%=ui%></option>
+                              <% else %>
+                              <option><%=ui%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="s">Scope : S </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="s">
+                          <% options.s.each do |s| %>
+
+                              <% if s == @finding.s %>
+                                <option selected="selected"><%=s%></option>
+                              <% else %>
+                              <option><%=s%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="c">Confidentiality Impact : C </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="c">
+                          <% options.c.each do |c| %>
+
+                              <% if c == @finding.c %>
+                                <option selected="selected"><%=c%></option>
+                              <% else %>
+                              <option><%=c%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="i">Integrity Impact : I </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="i">
+                          <% options.i.each do |i| %>
+
+                              <% if i == @finding.i %>
+                                <option selected="selected"><%=i%></option>
+                              <% else %>
+                              <option><%=i%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="a">Availability Impact : A </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="a">
+                          <% options.a.each do |a| %>
+
+                              <% if a == @finding.a %>
+                                <option selected="selected"><%=a%></option>
+                              <% else %>
+                              <option><%=a%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Temporal Score </label>
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="e">Exploitability : E </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="e">
+                          <% options.e.each do |e| %>
+
+                              <% if e == @finding.e %>
+                                <option selected="selected"><%=e%></option>
+                              <% else %>
+                              <option><%=e%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="rl">Remediation Level : RL </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="rl">
+                          <% options.rl.each do |rl| %>
+
+                              <% if rl == @finding.rl %>
+                                <option selected="selected"><%=rl%></option>
+                              <% else %>
+                              <option><%=rl%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="rc">Report Confidence : RC </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="rc">
+                          <% options.rc.each do |rc| %>
+
+                              <% if rc == @finding.rc %>
+                                <option selected="selected"><%=rc%></option>
+                              <% else %>
+                              <option><%=rc%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Environmental Score </label>
+                    </div>
+
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="mav">Modified Attack Vector : MAV </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="mav">
+                          <% options.mav.each do |mav| %>
+
+                              <% if mav == @finding.mav %>
+                                <option selected="selected"><%=mav%></option>
+                              <% else %>
+                              <option><%=mav%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="mac">Modified Access Complexity : MAC </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="mac">
+                          <% options.mac.each do |mac| %>
+
+                              <% if mac == @finding.mac %>
+                                <option selected="selected"><%=mac%></option>
+                              <% else %>
+                              <option><%=mac%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="mpr">Modified Privileges Required : MPR </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="mpr">
+                          <% options.mpr.each do |mpr| %>
+
+                              <% if mpr == @finding.mpr %>
+                                <option selected="selected"><%=mpr%></option>
+                              <% else %>
+                              <option><%=mpr%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="mui">Modified User Interaction : MUI </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="mui">
+                          <% options.mui.each do |mui| %>
+
+                              <% if mui == @finding.mui %>
+                                <option selected="selected"><%=mui%></option>
+                              <% else %>
+                              <option><%=mui%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ms">Modified Scope : MS </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="ms">
+                          <% options.ms.each do |ms| %>
+
+                              <% if ms == @finding.ms %>
+                                <option selected="selected"><%=ms%></option>
+                              <% else %>
+                              <option><%=ms%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="mc">Modified Confidentiality Impact : MC</label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="mc">
+                          <% options.mc.each do |mc| %>
+
+                              <% if mc == @finding.mc %>
+                                <option selected="selected"><%=mc%></option>
+                              <% else %>
+                              <option><%=mc%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="mi">Modified Integrity Impact : MI </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="mi">
+                          <% options.mi.each do |mi| %>
+
+                              <% if mi == @finding.mi %>
+                                <option selected="selected"><%=mi%></option>
+                              <% else %>
+                              <option><%=mi%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ma">Modified Availability Impact : MA </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="ma">
+                          <% options.ma.each do |ma| %>
+
+                              <% if ma == @finding.ma %>
+                                <option selected="selected"><%=ma%></option>
+                              <% else %>
+                              <option><%=ma%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="cr">Confidentiality Requirement : CR </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="cr">
+                          <% options.cr.each do |cr| %>
+
+                              <% if cr == @finding.cr %>
+                                <option selected="selected"><%=cr%></option>
+                              <% else %>
+                              <option><%=cr%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ir">Integrity Requirement : IR </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="ir">
+                          <% options.ir.each do |ir| %>
+
+                              <% if ir == @finding.ir %>
+                                <option selected="selected"><%=ir%></option>
+                              <% else %>
+                              <option><%=ir%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ar">Availability Requirement : AR </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="ar">
+                          <% options.ar.each do |ar| %>
+
+                              <% if ar == @finding.ar %>
+                                <option selected="selected"><%=ar%></option>
+                              <% else %>
+                              <option><%=ar%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <% if !@master and @finding.risk_cvss_v3 and @finding.risk_cvss_v3!=@finding.risk%>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="notes">Notes</label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <textarea class="form-control" id="notes" name="notes" >
+                            <% if @finding %>
+                              <% if @finding.notes %>
+                              <%=meta_markup(@finding.notes)%>
+                            <% end %>
+                            <% end %>
+                          </textarea>
+                        </div>
+                      </div>
+                    <% end %>
+
+                    <%end%>
+
+                    <% if @cvss2 %>
+                    <div class="x_title">
+                      <h2>Score CVSS v2 &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp</h2>
+                      <h2>Score = <%=@finding.cvss_total2%> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </h2>
+
+                      <% risk_types = ["None", "Low", "Medium", "High", "Critical"] %>
+
+                      <% if @finding.risk_cvss_v2 %>
+
+                      <h2>Severity = <%=risk_types[@finding.risk_cvss_v2]%> </h2>
+
+                      <% end %>
+
+
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" >Base Score </label>
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="av2">Access Vector : AV </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="av2">
+                          <% options.av2.each do |av2| %>
+
+                              <% if av2 == @finding.av2 %>
+                                <option selected="selected"><%=av2%></option>
+                              <% else %>
+                              <option><%=av2%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ac2">Access Complexity : AC </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="ac2">
+                          <% options.ac2.each do |ac2| %>
+
+                              <% if ac2 == @finding.ac2 %>
+                                <option selected="selected"><%=ac2%></option>
+                              <% else %>
+                              <option><%=ac2%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="au2">Authentication: AU </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="au2">
+                          <% options.au2.each do |au2| %>
+
+                              <% if au2 == @finding.au2 %>
+                                <option selected="selected"><%=au2%></option>
+                              <% else %>
+                              <option><%=au2%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="c2">Confidentiality Impact : C </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="c2">
+                          <% options.c2.each do |c2| %>
+
+                              <% if c2 == @finding.c2 %>
+                                <option selected="selected"><%=c2%></option>
+                              <% else %>
+                              <option><%=c2%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="i2">Integrity Impact : I </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="i2">
+                          <% options.i2.each do |i2| %>
+
+                              <% if i2 == @finding.i2 %>
+                                <option selected="selected"><%=i2%></option>
+                              <% else %>
+                              <option><%=i2%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="a2">Availability Impact : A </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="a2">
+                          <% options.a2.each do |a2| %>
+
+                              <% if a2 == @finding.a2 %>
+                                <option selected="selected"><%=a2%></option>
+                              <% else %>
+                              <option><%=a2%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Temporal Score </label>
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="e2">Exploitability : E </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="e2">
+                          <% options.e2.each do |e2| %>
+
+                              <% if e2 == @finding.e2 %>
+                                <option selected="selected"><%=e2%></option>
+                              <% else %>
+                              <option><%=e2%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="rl2">Remediation Level : RL </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="rl2">
+                          <% options.rl2.each do |rl2| %>
+
+                              <% if rl2 == @finding.rl2 %>
+                                <option selected="selected"><%=rl2%></option>
+                              <% else %>
+                              <option><%=rl2%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="rc2">Report Confidence : RC </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="rc2">
+                          <% options.rc2.each do |rc2| %>
+
+                              <% if rc2 == @finding.rc2 %>
+                                <option selected="selected"><%=rc2%></option>
+                              <% else %>
+                              <option><%=rc2%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Environmental Score </label>
+                    </div>
+
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="cdp">Collateral Damage Potential : CDP </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="cdp">
+                          <% options.cdp.each do |cdp| %>
+
+                              <% if cdp == @finding.cdp %>
+                                <option selected="selected"><%=cdp%></option>
+                              <% else %>
+                              <option><%=cdp%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="td">Target Distribution : TD </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="td">
+                          <% options.td.each do |td| %>
+
+                              <% if td == @finding.td %>
+                                <option selected="selected"><%=td%></option>
+                              <% else %>
+                              <option><%=td%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="cr2">Confidentiality Requirement : CR </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="cr2">
+                          <% options.cr2.each do |cr2| %>
+
+                              <% if cr2 == @finding.cr2 %>
+                                <option selected="selected"><%=cr2%></option>
+                              <% else %>
+                              <option><%=cr2%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ir2">Integrity Requirement : IR </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="ir2">
+                          <% options.ir2.each do |ir2| %>
+                          <% if ir2 == @finding.ir2 %>
+                          <option selected="selected"><%=ir2%></option>
+                              <% else %>
+                              <option><%=ir2%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ar2">Availability Requirement : AR </label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <select class="form-control" name="ar2">
+                          <% options.ar2.each do |ar2| %>
+
+                              <% if ar2 == @finding.ar2 %>
+                                <option selected="selected"><%=ar2%></option>
+                              <% else %>
+                              <option><%=ar2%></option>
+                              <% end %>
+
+                          <% end %>
+                        </select>
+                      </div>
+                    </div>
+
+                    <% if !@master and @finding.risk_cvss_v2 and  @finding.risk_cvss_v2!=@finding.risk%>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="notes">Notes</label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <textarea class="form-control" id="notes" name="notes" >
+                            <% if @finding %>
+                              <% if @finding.notes %>
+                              <%=meta_markup(@finding.notes)%>
+                            <% end %>
+                            <% end %>
+                          </textarea>
+                        </div>
+                      </div>
+                    <% end %>
+
+
+
+
+                    <%end%>
+
+
+                    <div class="ln_solid"></div>
+
+
+
+                    <div class="form-group">
+                      <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+
+                        <button type="submit" class="btn btn-success">Submit</button>
+                        <button  class="btn btn-primary" formnovalidate="formnovalidate" > Cancel</button>
+                      </div>
+                    </div>
+
+                  </form>
+
+                </div>
+              </div>
+            </div>

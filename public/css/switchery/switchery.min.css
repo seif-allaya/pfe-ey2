@@ -1,0 +1,24 @@
+.switchery {
+    display: inline-block;
+    position: relative;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    width: 32px;
+    height: 20px;
+    border: 1px solid #dfdfdf;
+    border-radius: 20px;
+    vertical-align: middle;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.switchery > small {
+    position: absolute;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
