@@ -2,12 +2,12 @@ source 'https://rubygems.org'
 
 ruby "2.1.5"
 
-gem 'sinatra'
-gem 'haml'
+gem 'sinatra', '>= 2.2.0'
+gem 'haml', '>= 5.0.0'
 gem 'zipruby'
-gem 'net-ldap'
-gem 'json'
-gem 'nokogiri'
+gem 'net-ldap', '>= 0.16.0'
+gem 'json', '>= 2.3.0'
+gem 'nokogiri', '>= 1.13.6'
 gem 'data_mapper'
 gem 'dm-sqlite-adapter'
 #what you added
