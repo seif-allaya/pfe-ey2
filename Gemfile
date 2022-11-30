@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby "2.1.5"
 
-gem 'sinatra'
+gem 'sinatra', '>= 2.2.3'
 gem 'haml'
 gem 'zipruby'
 gem 'net-ldap'
