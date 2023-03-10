@@ -7,7 +7,7 @@ gem 'haml'
 gem 'zipruby'
 gem 'net-ldap'
 gem 'json'
-gem 'nokogiri'
+gem 'nokogiri', '>= 1.10.5'
 gem 'data_mapper'
 gem 'dm-sqlite-adapter'
 #what you added
